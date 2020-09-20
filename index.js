@@ -1,6 +1,6 @@
 //Require modules for the application
+const fs = require('fs');
 const inquirer = require('inquirer');
-const { title } = require('process');
 const util = require('util');
 
 //Promisify writeFile function for later use
