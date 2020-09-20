@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/JJessee1371/README-Creator/issues"
   },
-  "homepage": "https://github.com/JJessee1371/README-Creator#readme"
+  "homepage": "https://github.com/JJessee1371/README-Creator#readme",
+  "dependencies": {
+    "inquirer": "^7.3.3"
+  }
 }
