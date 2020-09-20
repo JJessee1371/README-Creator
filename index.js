@@ -6,7 +6,7 @@ const util = require('util');
 //Promisify writeFile function for later use
 const writeReadmeAsync = util.promisify(fs.writeFile);
 
-//Function collects all answers from the user about their README
+//Function collects all answers from the user about their README via inquirer
 function getAnswers() {
     return inquirer.prompt([
         {
@@ -58,3 +58,54 @@ function getAnswers() {
         // }
     ]);
 };
+
+
+//generateReadme will take in the user data and format it to be written
+function generateReadme(answers) {
+    return `#${answers.title}
+
+    ##Table of contents
+    [Description](#Description)
+    [Installation](#Installation)
+    [Usage](#Usage)
+    [Contributing](#Contributing)
+    [Tests](#Tests)
+    [Questions](#Questions)
+    
+    ###Description
+    ${answers.description}
+    
+    ###Installation
+    ${answers.installation}
+    
+    ###Usage
+    ${answers.usage}
+    
+    ###Contributing
+    ${answers.contributing}
+    
+    ###Tests
+    ${answers.tests}
+    
+    ###Questions
+    For more information you can reach the creator at:
+    GitHub: <a href="${answers.github}"></a>
+    Email: ${answers.email}`
+};
+
+
+getAnswers()
+.then((answers) => {
+    //Once answers are collected they are passed to the generateReadme function
+    const readmeText = generateReadme(answers);
+    //Promisifed function writes the users input to the README file
+    return writeReadmeAsync('readmetest.md', readmeText);
+})
+.then(() => {
+    //If successful the user is notified
+    console.log('README successfully written!');
+})
+.catch((err) => {
+    //If an error occurs the user is notified 
+    console.log(err);
+});
