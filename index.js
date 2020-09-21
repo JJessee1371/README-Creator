@@ -2,6 +2,7 @@
 const fs = require('fs');
 const inquirer = require('inquirer');
 const util = require('util');
+const axios = require('axios');
 
 //Promisify writeFile function for later use
 const writeReadmeAsync = util.promisify(fs.writeFile);
@@ -13,6 +14,20 @@ function getAnswers() {
             type: 'input',
             message: 'What is the title of your project?',
             name: 'title'
+        },
+        {
+            type: 'list',
+            message: 'What license would you like to use for your project?',
+            choices: [
+                'MIT',
+                'GNU Lesser v3.0',
+                'Mozilla Public 2.0',
+                'GNU Affero v3.0',
+                'The Unlicense',
+                'Apache 2.0',
+                'GNU General v3.0'
+            ],
+            name: 'license'
         },
         {
             type: 'input',
@@ -48,64 +63,103 @@ function getAnswers() {
             type: 'input',
             message: 'What email address can users reach you at?',
             name: 'email'
-        },
-        // {
-        //     type: 'list',
-        //     message: 'What license would you like to use for your project?',
-        //     choices: [
-
-        //     ]
-        // }
+        }
     ]);
 };
 
 
-//generateReadme will take in the user data and format it to be written
-function generateReadme(answers) {
-    return `# ${answers.title}
+//Retrieves licensing info from GitHub API utilizing the inquirer prompt information
+function getLicense(answers) {
+    let githubUrl = '';
+    switch(answers.license) {
+        case 'MIT':
+            githubUrl = 'https://api.github.com/licenses/mit';
+            break;
+        
+        case 'GNU Lesser v3.0':
+            githubUrl = 'https://api.github.com/licenses/lgpl-3.0';
+            break;
 
-    ## Table of contents
-    [License](#License)
-    [Description](#Description)
-    [Installation](#Installation)
-    [Usage](#Usage)
-    [Contributing](#Contributing)
-    [Tests](#Tests)
-    [Questions](#Questions)
+        case 'Mozilla Public 2.0':
+            githubUrl = 'https://api.github.com/licenses/mpl-2.0';
+            break;
 
-    ## License
-    
-    ### Description
-    ${answers.description}
-    
-    ### Installation
-    ${answers.installation}
-    
-    ### Usage
-    ${answers.usage}
-    
-    ### Contributing
-    ${answers.contributing}
-    
-    ### Tests
-    ${answers.tests}
-    
-    ### Questions
-    For more information you can reach the creator at:
-    GitHub: <a href="${answers.github}">Click here</a>
-    Email: ${answers.email}`
+        case 'GNU Affero v3.0':
+            githubUrl = 'https://api.github.com/licenses/agpl-3.0';
+            break;
+
+        case 'The Unlicense':
+            githubUrl = 'https://api.github.com/licenses/unlicense';
+            break;
+
+        case 'Apache 2.0':
+            githubUrl = 'https://api.github.com/licenses/apache-2.0';
+            break;
+
+        case 'GNU General v3.0':
+            githubUrl = 'https://api.github.com/licenses/gpl-3.0';
+            break;
+    };
+
+    return axios
+    .get(githubUrl)
+    .then((licenseData) => {
+        console.log(licenseData.body);
+    });
 };
 
-
-//Promises return data and create the README file
 getAnswers()
 .then((answers) => {
-    const readmeText = generateReadme(answers);
-    return writeReadmeAsync('readmetest.md', readmeText);
-})
-.then(() => {
-    console.log('README successfully written!');
-})
-.catch((err) => {
-    console.log(err);
+    getLicense(answers);
 });
+
+
+//generateReadme will take in the user data and format it to be written
+// function generateReadme(answers) {
+//     return `# ${answers.title}
+
+//     ## Table of contents
+//     [License](#License)
+//     [Description](#Description)
+//     [Installation](#Installation)
+//     [Usage](#Usage)
+//     [Contributing](#Contributing)
+//     [Tests](#Tests)
+//     [Questions](#Questions)
+
+//     ### License
+    
+//     ### Description
+//     ${answers.description}
+    
+//     ### Installation
+//     ${answers.installation}
+    
+//     ### Usage
+//     ${answers.usage}
+    
+//     ### Contributing
+//     ${answers.contributing}
+    
+//     ### Tests
+//     ${answers.tests}
+    
+//     ### Questions
+//     For more information you can reach the creator at:
+//     GitHub: <a href="${answers.github}">Click here</a>
+//     Email: ${answers.email}`
+// };
+
+
+// //Promises return data and create the README file
+// getAnswers()
+// .then((answers) => {
+//     const readmeText = generateReadme(answers);
+//     return writeReadmeAsync('readmetest.md', readmeText);
+// })
+// .then(() => {
+//     console.log('README successfully written!');
+// })
+// .catch((err) => {
+//     console.log(err);
+// });
