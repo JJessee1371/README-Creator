@@ -21,11 +21,12 @@ function getAnswers() {
             message: 'What license would you like to use for your project?',
             choices: [
                 'MIT',
-                'ISC',
-                'Apache 2.0',
-                'GNU General Public License v2.0',
-                'GNU General Public License v3.0',
-                'The Unlicense'
+                'GNU Lesser General Public License v3.0',
+                'Mozilla Public License 2.0',
+                'GNU Affero General Public License v3.0',
+                'The Unlicense',
+                'Apache License 2.0',
+                'GNU General Public License v3.0'
             ],
             name: 'license'
         },
@@ -68,13 +69,47 @@ function getAnswers() {
 };
 
 
-function getLicense() {
+function getLicense(answers) {
+    let githubURL = '';
+    switch(answers.license) {
+        case 'MIT':
+            githubURL = 'https://api.github.com/licenses/mit';
+            break;
 
-}
+        case 'GNU Lesser General Public License v3.0':
+            githubURL = 'https://api.github.com/licenses/lgpl-3.0';
+            break;
+
+        case 'Mozilla Public License 2.0':
+            githubURL = 'https://api.github.com/licenses/mpl-2.0';
+            break;
+
+        case 'GNU Affero General Public License v3.0':
+            githubURL = 'https://api.github.com/licenses/agpl-3.0';
+            break;
+
+        case 'The Unlicense':
+            githubURL = 'https://api.github.com/licenses/unlicense';
+            break;
+
+        case 'Apache License 2.0':
+            githubURL = 'https://api.github.com/licenses/apache-2.0';
+            break;
+
+        case 'GNU General Public License v3.0':
+            githubURL = 'https://api.github.com/licenses/gpl-3.0';
+
+        return axios
+        .get(githubURL)
+        .then((response) => {
+            response.data.body;
+        });
+    };
+};
 
 
 //generateReadme will take in the user data and format it to be written
-function generateReadme(answers) {
+function generateReadme(answers, info) {
     return `#${answers.title}
 
     ##Table of contents
@@ -87,7 +122,7 @@ function generateReadme(answers) {
     [Questions](#Questions)
 
     ###License
-
+    ${info}
     
     ###Description
     ${answers.description}
@@ -110,15 +145,31 @@ function generateReadme(answers) {
     Email: ${answers.email}`
 };
 
-//Data is collected and the README is written to its file
+
 getAnswers()
 .then((answers) => {
-    const readmeText = generateReadme(answers);
-    return writeReadmeAsync('readmetest.md', readmeText);
+    getLicense(answers);
+    const readmeText = generateReadme(answers, info);
+    return writeReadmeAsync('reademetest.md', readmeText);
 })
 .then(() => {
-    console.log('README successfully written!');
+    console.log('Successfully written!');
 })
-.catch((err) => { 
-    console.log(err);
+.catch((err) => {
+    if(err) {
+        console.log(err);
+    };
 });
+
+// //Data is collected and the README is written to its file
+// getAnswers()
+// .then((answers) => {
+//     const readmeText = generateReadme(answers);
+//     return writeReadmeAsync('readmetest.md', readmeText);
+// })
+// .then(() => {
+//     console.log('README successfully written!');
+// })
+// .catch((err) => { 
+//     console.log(err);
+// });
