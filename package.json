@@ -17,7 +17,6 @@
   },
   "homepage": "https://github.com/JJessee1371/README-Creator#readme",
   "dependencies": {
-    "axios": "^0.20.0",
     "inquirer": "^7.3.3"
   }
 }
