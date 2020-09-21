@@ -62,50 +62,50 @@ function getAnswers() {
 
 //generateReadme will take in the user data and format it to be written
 function generateReadme(answers) {
-    return `#${answers.title}
+    return `# ${answers.title}
 
-    ##Table of contents
+    ## Table of contents
+    [License](#License)
     [Description](#Description)
     [Installation](#Installation)
     [Usage](#Usage)
     [Contributing](#Contributing)
     [Tests](#Tests)
     [Questions](#Questions)
+
+    ## License
     
-    ###Description
+    ### Description
     ${answers.description}
     
-    ###Installation
+    ### Installation
     ${answers.installation}
     
-    ###Usage
+    ### Usage
     ${answers.usage}
     
-    ###Contributing
+    ### Contributing
     ${answers.contributing}
     
-    ###Tests
+    ### Tests
     ${answers.tests}
     
-    ###Questions
+    ### Questions
     For more information you can reach the creator at:
-    GitHub: <a href="${answers.github}"></a>
+    GitHub: <a href="${answers.github}">Click here</a>
     Email: ${answers.email}`
 };
 
 
+//Promises return data and create the README file
 getAnswers()
 .then((answers) => {
-    //Once answers are collected they are passed to the generateReadme function
     const readmeText = generateReadme(answers);
-    //Promisifed function writes the users input to the README file
     return writeReadmeAsync('readmetest.md', readmeText);
 })
 .then(() => {
-    //If successful the user is notified
     console.log('README successfully written!');
 })
 .catch((err) => {
-    //If an error occurs the user is notified 
     console.log(err);
 });
