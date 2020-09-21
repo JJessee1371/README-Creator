@@ -2,12 +2,12 @@
 const fs = require('fs');
 const inquirer = require('inquirer');
 const util = require('util');
-const axios = require('axios');
+const { clear } = require('console');
 
 //Promisify writeFile function for later use
 const writeReadmeAsync = util.promisify(fs.writeFile);
 
-//Function collects all answers from the user about their README via inquirer
+// Function collects all answers from the user about their README via inquirer
 function getAnswers() {
     return inquirer.prompt([
         {
@@ -68,98 +68,52 @@ function getAnswers() {
 };
 
 
-//Retrieves licensing info from GitHub API utilizing the inquirer prompt information
-function getLicense(answers) {
-    let githubUrl = '';
-    switch(answers.license) {
-        case 'MIT':
-            githubUrl = 'https://api.github.com/licenses/mit';
-            break;
-        
-        case 'GNU Lesser v3.0':
-            githubUrl = 'https://api.github.com/licenses/lgpl-3.0';
-            break;
+//generateReadme will take in the user data and format it to be written
+function generateReadme(answers) {
+    return `# ${answers.title}
 
-        case 'Mozilla Public 2.0':
-            githubUrl = 'https://api.github.com/licenses/mpl-2.0';
-            break;
+    ## Table of contents
+    [License](#License)
+    [Description](#Description)
+    [Installation](#Installation)
+    [Usage](#Usage)
+    [Contributing](#Contributing)
+    [Tests](#Tests)
+    [Questions](#Questions)
 
-        case 'GNU Affero v3.0':
-            githubUrl = 'https://api.github.com/licenses/agpl-3.0';
-            break;
-
-        case 'The Unlicense':
-            githubUrl = 'https://api.github.com/licenses/unlicense';
-            break;
-
-        case 'Apache 2.0':
-            githubUrl = 'https://api.github.com/licenses/apache-2.0';
-            break;
-
-        case 'GNU General v3.0':
-            githubUrl = 'https://api.github.com/licenses/gpl-3.0';
-            break;
-    };
-
-    return axios
-    .get(githubUrl)
-    .then((licenseData) => {
-        console.log(licenseData.body);
-    });
+    ### License
+    
+    ### Description
+    ${answers.description}
+    
+    ### Installation
+    ${answers.installation}
+    
+    ### Usage
+    ${answers.usage}
+    
+    ### Contributing
+    ${answers.contributing}
+    
+    ### Tests
+    ${answers.tests}
+    
+    ### Questions
+    For more information you can reach the creator at:
+    GitHub: <a href="${answers.github}">Click here</a>
+    Email: ${answers.email}`
 };
 
+
+//Promises return data and create the README file
 getAnswers()
 .then((answers) => {
-    getLicense(answers);
+    const readmeText = generateReadme(answers);
+    return writeReadmeAsync('readmetest.md', readmeText);
+})
+.then(() => {
+    console.log('README successfully written!');
+})
+.catch((err) => {
+    console.log(err);
 });
-
-
-//generateReadme will take in the user data and format it to be written
-// function generateReadme(answers) {
-//     return `# ${answers.title}
-
-//     ## Table of contents
-//     [License](#License)
-//     [Description](#Description)
-//     [Installation](#Installation)
-//     [Usage](#Usage)
-//     [Contributing](#Contributing)
-//     [Tests](#Tests)
-//     [Questions](#Questions)
-
-//     ### License
-    
-//     ### Description
-//     ${answers.description}
-    
-//     ### Installation
-//     ${answers.installation}
-    
-//     ### Usage
-//     ${answers.usage}
-    
-//     ### Contributing
-//     ${answers.contributing}
-    
-//     ### Tests
-//     ${answers.tests}
-    
-//     ### Questions
-//     For more information you can reach the creator at:
-//     GitHub: <a href="${answers.github}">Click here</a>
-//     Email: ${answers.email}`
-// };
-
-
-// //Promises return data and create the README file
-// getAnswers()
-// .then((answers) => {
-//     const readmeText = generateReadme(answers);
-//     return writeReadmeAsync('readmetest.md', readmeText);
-// })
-// .then(() => {
-//     console.log('README successfully written!');
-// })
-// .catch((err) => {
-//     console.log(err);
-// });
