@@ -2,6 +2,7 @@
 const fs = require('fs');
 const inquirer = require('inquirer');
 const util = require('util');
+const axios = require('axios');
 const { clear } = require('console');
 
 //Promisify writeFile function for later use
@@ -20,12 +21,11 @@ function getAnswers() {
             message: 'What license would you like to use for your project?',
             choices: [
                 'MIT',
-                'GNU Lesser v3.0',
-                'Mozilla Public 2.0',
-                'GNU Affero v3.0',
-                'The Unlicense',
+                'ISC',
                 'Apache 2.0',
-                'GNU General v3.0'
+                'GNU General Public License v2.0',
+                'GNU General Public License v3.0',
+                'The Unlicense'
             ],
             name: 'license'
         },
@@ -68,22 +68,26 @@ function getAnswers() {
 };
 
 
+function getLicense() {
+
+}
+
+
 //generateReadme will take in the user data and format it to be written
 function generateReadme(answers) {
     return `#${answers.title}
 
     ##Table of contents
+    [License](#License)
     [Description](#Description)
     [Installation](#Installation)
     [Usage](#Usage)
     [Contributing](#Contributing)
     [Tests](#Tests)
     [Questions](#Questions)
-<<<<<<< HEAD
 
-    ### License
-=======
->>>>>>> parent of a736121... Completed draft of README file and inserted a new question to gather further licensing information from the user.
+    ###License
+
     
     ###Description
     ${answers.description}
@@ -106,19 +110,15 @@ function generateReadme(answers) {
     Email: ${answers.email}`
 };
 
-
+//Data is collected and the README is written to its file
 getAnswers()
 .then((answers) => {
-    //Once answers are collected they are passed to the generateReadme function
     const readmeText = generateReadme(answers);
-    //Promisifed function writes the users input to the README file
     return writeReadmeAsync('readmetest.md', readmeText);
 })
 .then(() => {
-    //If successful the user is notified
     console.log('README successfully written!');
 })
-.catch((err) => {
-    //If an error occurs the user is notified 
+.catch((err) => { 
     console.log(err);
 });
