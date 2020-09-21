@@ -100,16 +100,13 @@ function getLicense(answers) {
             githubURL = 'https://api.github.com/licenses/gpl-3.0';
 
         return axios
-        .get(githubURL)
-        .then((response) => {
-            response.data.body;
-        });
+        .get(githubURL);  
     };
 };
 
 
 //generateReadme will take in the user data and format it to be written
-function generateReadme(answers, info) {
+function generateReadme(answers, response) {
     return `#${answers.title}
 
     ##Table of contents
@@ -122,7 +119,7 @@ function generateReadme(answers, info) {
     [Questions](#Questions)
 
     ###License
-    ${info}
+    ${response.data.body}
     
     ###Description
     ${answers.description}
@@ -149,7 +146,9 @@ function generateReadme(answers, info) {
 getAnswers()
 .then((answers) => {
     getLicense(answers);
-    const readmeText = generateReadme(answers, info);
+})
+.then((answers, response) => {
+    const readmeText = generateReadme(answers, response);
     return writeReadmeAsync('reademetest.md', readmeText);
 })
 .then(() => {
@@ -160,6 +159,8 @@ getAnswers()
         console.log(err);
     };
 });
+
+
 
 // //Data is collected and the README is written to its file
 // getAnswers()
