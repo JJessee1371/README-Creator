@@ -68,40 +68,8 @@ async function getAnswers() {
             }
         ]);
 
-
-        //The desired license is passed to the AXIOS module in order to return licensing info
-        let githubURL = '';
-        switch(answers.license) {
-            case 'MIT':
-                githubURL = 'https://api.github.com/licenses/mit';
-                break;
-
-            case 'GNU Lesser General Public License v3.0':
-                githubURL = 'https://api.github.com/licenses/lgpl-3.0';
-                break;
-
-            case 'Mozilla Public License 2.0':
-                githubURL = 'https://api.github.com/licenses/mpl-2.0';
-                break;
-
-            case 'GNU Affero General Public License v3.0':
-                githubURL = 'https://api.github.com/licenses/agpl-3.0';
-                break;
-
-            case 'The Unlicense':
-                githubURL = 'https://api.github.com/licenses/unlicense';
-                break;
-
-            case 'Apache License 2.0':
-                githubURL = 'https://api.github.com/licenses/apache-2.0';
-                break;
-
-            case 'GNU General Public License v3.0':
-                githubURL = 'https://api.github.com/licenses/gpl-3.0';
-  
-        };
-
-        const license = await axios.get(githubURL);
+        //License information is retreived via AXIOS
+        const license = await getLicense(answers);
 
         //Readme is genereated and written to the file
         const text = await generateReadme(answers, license);
@@ -109,6 +77,42 @@ async function getAnswers() {
     } catch(error) {
         console.log(error)
     };
+};
+
+
+function getLicense(answers) {
+    let githubURL = '';
+    switch(answers.license) {
+        case 'MIT':
+            githubURL = 'https://api.github.com/licenses/mit';
+            break;
+
+        case 'GNU Lesser General Public License v3.0':
+            githubURL = 'https://api.github.com/licenses/lgpl-3.0';
+            break;
+
+        case 'Mozilla Public License 2.0':
+            githubURL = 'https://api.github.com/licenses/mpl-2.0';
+            break;
+
+        case 'GNU Affero General Public License v3.0':
+            githubURL = 'https://api.github.com/licenses/agpl-3.0';
+            break;
+
+        case 'The Unlicense':
+            githubURL = 'https://api.github.com/licenses/unlicense';
+            break;
+
+        case 'Apache License 2.0':
+            githubURL = 'https://api.github.com/licenses/apache-2.0';
+            break;
+
+        case 'GNU General Public License v3.0':
+            githubURL = 'https://api.github.com/licenses/gpl-3.0';
+
+    };
+
+    return response = axios.get(githubURL);
 };
 
 
