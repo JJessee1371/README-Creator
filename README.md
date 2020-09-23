@@ -11,15 +11,15 @@ by any user.
 ## Application Screenshot and Video
 ![readme-screenshot](https://user-images.githubusercontent.com/66571617/93966270-76606b80-fd21-11ea-8501-f6d22563a2e2.PNG)
 
-![Google Drive video link](https://drive.google.com/file/d/1ukiiTXq5WZY4A8F8IdjZG3cV2tbuUMbf/view?usp=sharing)
+[Google Drive video link](https://drive.google.com/file/d/1ukiiTXq5WZY4A8F8IdjZG3cV2tbuUMbf/view?usp=sharing)
 
 ## GitHub Respository 
-![GitHub](https://github.com/JJessee1371/README-Creator)
+[GitHub](https://github.com/JJessee1371/README-Creator)
 
 ## Credits
 The application was made possible through use of the AXIOS and Inquirer modules available through NPM 
 in addition to the GitHub API. 
 
-![AXIOS](https://www.npmjs.com/package/axios)
-![Inquirer](https://www.npmjs.com/package/inquirer)
-![GitHub API](https://developer.github.com/v3/)
+[AXIOS](https://www.npmjs.com/package/axios)
+[Inquirer](https://www.npmjs.com/package/inquirer)
+[GitHub API](https://developer.github.com/v3/)
