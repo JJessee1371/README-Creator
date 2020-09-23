@@ -74,6 +74,7 @@ async function getAnswers() {
         //Readme is genereated and written to the file
         const text = await generateReadme(answers, license);
         await writeReadmeAsync('READMEtest.md', text);
+
     } catch(error) {
         console.log(error)
     };
@@ -151,40 +152,43 @@ function generateReadme(answers, license) {
             
     };
 
-    return `#${answers.title}
-    ${badge}
+    //Insert all data into the markdown format
+    return `
+# ${answers.title}
+${badge}
 
-    ##Table of contents
-    [License](#License)
-    [Description](#Description)
-    [Installation](#Installation)
-    [Usage](#Usage)
-    [Contributing](#Contributing)
-    [Tests](#Tests)
-    [Questions](#Questions)
+## Table of contents
+* [License](#License)
+* [Description](#Description)
+* [Installation](#Installation)
+* [Usage](#Usage)
+* [Contributing](#Contributing)
+* [Tests](#Tests)
+* [Questions](#Questions)
 
-    ###License
-    ${license.data.body}
+### License
+${license.data.body}
     
-    ###Description
-    ${answers.description}
+### Description
+${answers.description}
     
-    ###Installation
-    ${answers.installation}
+### Installation
+${answers.installation}
     
-    ###Usage
-    ${answers.usage}
+### Usage
+${answers.usage}
     
-    ###Contributing
-    ${answers.contributing}
+### Contributing
+${answers.contributing}
     
-    ###Tests
-    ${answers.tests}
-    
-    ###Questions
-    For more information you can reach the creator at:
-    GitHub: <a href="${answers.github}"></a>
-    Email: ${answers.email}`
+### Tests
+${answers.tests}
+
+### Questions
+For more information you can reach the creator through github at the following:
+GitHub: <a href="${answers.github}">Link</a>
+Or by email at this address:
+Email: ${answers.email}`
 };
 
 
