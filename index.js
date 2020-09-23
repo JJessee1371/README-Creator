@@ -1,11 +1,10 @@
-//Require modules for the application
+//Required modules for the application
 const fs = require('fs');
 const inquirer = require('inquirer');
 const util = require('util');
 const axios = require('axios');
-const { clear } = require('console');
 
-//Promisify writeFile function for later use
+//Promisify writeFile function for later use creating README file
 const writeReadmeAsync = util.promisify(fs.writeFile);
 
 async function getAnswers() {
@@ -110,10 +109,9 @@ function getLicense(answers) {
 
         case 'GNU General Public License v3.0':
             githubURL = 'https://api.github.com/licenses/gpl-3.0';
-
     };
 
-    return response = axios.get(githubURL);
+    return axios.get(githubURL);
 };
 
 
@@ -152,8 +150,8 @@ function generateReadme(answers, license) {
             
     };
 
-    //Insert all data into the markdown format
-    return `
+//Insert all data into the markdown format
+return `
 # ${answers.title}
 ${badge}
 
@@ -186,7 +184,7 @@ ${answers.tests}
 
 ### Questions
 For more information you can reach the creator through github at the following:
-GitHub: <a href="${answers.github}">Link</a>
+[GitHub](${answers.github})
 Or by email at this address:
 Email: ${answers.email}`
 };
